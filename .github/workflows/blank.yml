@@ -34,3 +34,19 @@ jobs:
          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
           echo "$file was changed"
          done
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+    - uses: vimtor/action-zip@v1
+      with:
+        files: hello.txt Bye.txt,
+        dest: myarchive.zip
+    - name: Commit & Push changes
+      uses: actions-js/push@master
+      with:
+        github_token: ${{ secrets.Vince }}
